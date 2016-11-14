@@ -5,6 +5,6 @@ package S2medHybris;
  */
 public class Main {
     //Uppdatera hallåååå
-    //technogilgyyy maan
+    //technogilgyyy maanasd
 
 }
