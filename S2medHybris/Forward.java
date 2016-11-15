@@ -5,4 +5,8 @@ package S2medHybris;
  */
 public class Forward extends Instruction{
     private int dist;
+    @Override
+    public boolean isThisInstruction() {
+        return false;
+    }
 }

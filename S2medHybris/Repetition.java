@@ -8,4 +8,8 @@ import java.util.ArrayList;
 public class Repetition extends Instruction {
     private int noReps;
     private ArrayList<Instruction> repInstructions;
+    @Override
+    public boolean isThisInstruction() {
+        return false;
+    }
 }

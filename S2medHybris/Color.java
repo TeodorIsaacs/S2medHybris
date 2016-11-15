@@ -5,4 +5,8 @@ package S2medHybris;
  */
 public class Color extends Instruction{
     private String color;
+    @Override
+    public boolean isThisInstruction() {
+        return false;
+    }
 }

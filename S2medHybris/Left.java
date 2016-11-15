@@ -5,4 +5,8 @@ package S2medHybris;
  */
 public class Left extends Instruction {
     private int degree;
+    @Override
+    public boolean isThisInstruction() {
+        return false;
+    }
 }
