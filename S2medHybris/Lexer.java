@@ -1,4 +1,4 @@
-package Lexer;
+package S2medHybris;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

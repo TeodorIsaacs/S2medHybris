@@ -3,12 +3,12 @@ package S2medHybris;
 // De olika token-typer vi har i grammatiken
 enum TokenType {
     Data, Hex, Einstr, Dinstr, Repeat, Cinstr, Dot, Space, Cit
-}
+    }
 
 class Token {
     private TokenType type;
     private String exactType;
-    private Object data;
+    private String data;
     private int line;
     private int indexInLine;
 
@@ -20,7 +20,7 @@ class Token {
         this.data = null;
     }
 
-    public Token(TokenType type, String exactType, int line, int indexInLine, Object data) {
+    public Token(TokenType type, String exactType, int line, int indexInLine, String data) {
         this.type = type;
         this.exactType = exactType;
         this.line = line;
@@ -52,3 +52,4 @@ class Token {
         return exactType;
     }
 }
+
