@@ -5,8 +5,14 @@ package S2medHybris;
  */
 public class Forward extends Instruction{
     private int dist;
-    @Override
-    public boolean isThisInstruction() {
+    public static boolean isThisInstruction(String tryString) {
+        if (tryString.matches("^#\\d{6}$"))
+            return true;
         return false;
+    }
+
+    @Override
+    public String printableInfo() {
+        return String.valueOf(dist);
     }
 }

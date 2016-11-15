@@ -8,8 +8,14 @@ import java.util.ArrayList;
 public class Repetition extends Instruction {
     private int noReps;
     private ArrayList<Instruction> repInstructions;
-    @Override
-    public boolean isThisInstruction() {
+    public static boolean isThisInstruction(String tryString) {
+        if (tryString.matches("^#\\d{6}$"))
+            return true;
         return false;
+    }
+
+    @Override
+    public String printableInfo() {
+        return null;
     }
 }

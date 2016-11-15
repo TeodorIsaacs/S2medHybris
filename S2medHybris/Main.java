@@ -6,13 +6,18 @@ import java.util.ArrayList;
  * Created by Teodor Isaacs on 16-11-14.
  */
 public class Main {
-    //Uppdatera hallåååå
-    //technogilgyyy maanasd
+    public static void main(String[] args) {
+        Instruction inst = whichInstruction("#101010");
+        System.out.println(inst.printableInfo());
+    }
 
-    //DIS IS WHASSUP
-    public ArrayList<Instruction> instructions = new ArrayList<Instruction>();
-
-    private void example(){
-        instructions.add(new Repetition());
+    private static Instruction whichInstruction(String line){
+        Color mbyColor = Color.isThisInstruction(line);
+        if (mbyColor != null)
+            return mbyColor;
+        Back mbyBack = Back.isThisInstruction(line);
+        if (mbyBack != null)
+            return mbyBack;
+        return null;
     }
 }
