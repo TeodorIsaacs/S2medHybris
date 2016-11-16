@@ -18,13 +18,13 @@ public class Executor {
         for (CompleteInstruction inst : list) {
             if (inst.getInstructionType() == (InstructionType.Dcomplete)) {
                 if (inst.getExactType().matches("FORW")) {
-                    DecimalFormat df = new DecimalFormat("#.####");
+                    DecimalFormat df = new DecimalFormat("0.0000");
                     String oldpos = df.format(pen.getxPos()) + " " + df.format(pen.getyPos());
                     pen.nextPos(inst.getData().getIntData());
                     System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos())  + " " + df.format(pen.getyPos()));
 
                 }else if (inst.getExactType().matches("BACK")) {
-                    DecimalFormat df = new DecimalFormat("#.####");
+                    DecimalFormat df = new DecimalFormat("0.0000");
                     String oldpos = df.format(pen.getxPos()) + " " + df.format(pen.getyPos());
                     pen.nextPos(-inst.getData().getIntData());
                     System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos())  + " " + df.format(pen.getyPos()));
