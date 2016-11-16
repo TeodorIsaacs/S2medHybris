@@ -25,6 +25,7 @@ public class Lexer {
         while (m.find()){
             if(m.group().matches("\\%.*\\n")){
                 lineCount++;
+                tokenList.add(new Token(TokenType.Space, "space", lineCount, index));
             } else if (m.group().matches("#[A-F\\d]{6}")){
                 tokenList.add(new Token(TokenType.Hex, "Hex", lineCount, index, m.group()));
             } else if (m.group().matches("\\d{1,5}")){

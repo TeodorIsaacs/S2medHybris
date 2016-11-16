@@ -32,10 +32,10 @@ public class Executor {
                         System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos()) + " " + df.format(pen.getyPos()));
 
                 } else if (inst.getExactType().matches("LEFT")) {
-                    pen.calcNewAngle(-inst.getData().getIntData());
+                    pen.calcNewAngle(inst.getData().getIntData());
 
                 } else if (inst.getExactType().matches("RIGHT")) {
-                    pen.calcNewAngle(inst.getData().getIntData());
+                    pen.calcNewAngle(-inst.getData().getIntData());
 
                 }
             } else if (inst.getInstructionType() == InstructionType.Ecomplete) {
