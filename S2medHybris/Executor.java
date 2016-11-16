@@ -21,21 +21,21 @@ public class Executor {
                     DecimalFormat df = new DecimalFormat("0.0000");
                     String oldpos = df.format(pen.getxPos()) + " " + df.format(pen.getyPos());
                     pen.nextPos(inst.getData().getIntData());
-                    System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos())  + " " + df.format(pen.getyPos()));
+                    System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos()) + " " + df.format(pen.getyPos()));
 
-                }else if (inst.getExactType().matches("BACK")) {
+                } else if (inst.getExactType().matches("BACK")) {
                     DecimalFormat df = new DecimalFormat("0.0000");
                     String oldpos = df.format(pen.getxPos()) + " " + df.format(pen.getyPos());
                     pen.nextPos(-inst.getData().getIntData());
-                    System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos())  + " " + df.format(pen.getyPos()));
+                    System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos()) + " " + df.format(pen.getyPos()));
 
-                }else if (inst.getExactType().matches("LEFT")) {
-                    pen.calcNewAngle(inst.getData().getIntData());
-
-                }else if (inst.getExactType().matches("RIGHT")) {
+                } else if (inst.getExactType().matches("LEFT")) {
                     pen.calcNewAngle(-inst.getData().getIntData());
 
-                }else{
+                } else if (inst.getExactType().matches("RIGHT")) {
+                    pen.calcNewAngle(inst.getData().getIntData());
+
+                } else {
                     pen.changeColor(inst.getData().getData());
                 }
             } else if (inst.getInstructionType() == InstructionType.Ecomplete) {
@@ -51,7 +51,7 @@ public class Executor {
         }
     }
 
-    public Pen getPen(){
+    public Pen getPen() {
         return pen;
     }
 }
