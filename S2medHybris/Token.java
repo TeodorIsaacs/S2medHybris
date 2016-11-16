@@ -32,7 +32,7 @@ class Token {
         return type;
     }
 
-    public Object getData() {
+    public String getData() {
         return data;
     }
 

@@ -19,11 +19,12 @@ public class Lexer {
 
     public Lexer(InputStream in) throws java.io.IOException{
         input = read(in).toUpperCase();
-        System.out.println(input);
+        //System.out.println(input);
         Pattern patt = Pattern.compile("\\%.*\\n|\\d{1,5}|FORW|BACK|LEFT|RIGHT|DOWN|UP|COLOR|REP|\\.|\\\"|#[A-F\\d]{6}|[ \\t\\n]");
         Matcher m = patt.matcher(input);
         while (m.find()){
             if(m.group().matches("\\%.*\\n")){
+                lineCount++;
             } else if (m.group().matches("#[A-F\\d]{6}")){
                 tokenList.add(new Token(TokenType.Hex, "Hex", lineCount, index, m.group()));
             } else if (m.group().matches("\\d{1,5}")){
@@ -42,6 +43,8 @@ public class Lexer {
                 tokenList.add(new Token(TokenType.Cit, "cit", lineCount, index));
             } else if (m.group().matches("[ \\t\\n]")){
                 tokenList.add(new Token(TokenType.Space, "space", lineCount, index));
+                if (m.group().matches("\\n"))
+                    lineCount++;
             }
 
         }
