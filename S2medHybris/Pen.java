@@ -12,7 +12,7 @@ public class Pen {
     public Pen(){
         xPos = 0;
         yPos = 0;
-        angle = 90;
+        angle = 0;
         drawing = false;
         color = "#0000FF";
     }

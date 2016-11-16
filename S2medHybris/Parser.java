@@ -45,8 +45,12 @@ public class Parser {
                 while (Peek(1).getType() == TokenType.Space){Next();}
                 if (Next().getType() != TokenType.Cit) throw new Exception("Fel uppstod på rad: " + This().getLine() + " index: " + This().getIndexInLine());
                 CompleteInstruction inner = new CompleteInstruction(Peek(-2).getIntData(), parse());
+                int i = -1;
                 out.add(inner);
-                //if (Peek(-1).getType() != TokenType.Cit) throw new Exception("Fel uppstod på rad: " + This().getLine() + " index: " + This().getIndexInLine());
+                while (Peek(i).getType() == TokenType.Space){
+                    i--;
+                }
+                if (Peek(i).getType() != TokenType.Cit) throw new Exception("Fel uppstod på rad: " + This().getLine() + " index: " + This().getIndexInLine());
             } else if(t.getType() == TokenType.Cit){
                 Next();
                 return out;

@@ -21,13 +21,15 @@ public class Executor {
                     DecimalFormat df = new DecimalFormat("0.0000");
                     String oldpos = df.format(pen.getxPos()) + " " + df.format(pen.getyPos());
                     pen.nextPos(inst.getData().getIntData());
-                    System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos()) + " " + df.format(pen.getyPos()));
+                    if (pen.drawing)
+                        System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos()) + " " + df.format(pen.getyPos()));
 
                 } else if (inst.getExactType().matches("BACK")) {
                     DecimalFormat df = new DecimalFormat("0.0000");
                     String oldpos = df.format(pen.getxPos()) + " " + df.format(pen.getyPos());
                     pen.nextPos(-inst.getData().getIntData());
-                    System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos()) + " " + df.format(pen.getyPos()));
+                    if (pen.drawing)
+                        System.out.println(pen.color + " " + oldpos + " " + df.format(pen.getxPos()) + " " + df.format(pen.getyPos()));
 
                 } else if (inst.getExactType().matches("LEFT")) {
                     pen.calcNewAngle(-inst.getData().getIntData());
@@ -35,8 +37,6 @@ public class Executor {
                 } else if (inst.getExactType().matches("RIGHT")) {
                     pen.calcNewAngle(inst.getData().getIntData());
 
-                } else {
-                    pen.changeColor(inst.getData().getData());
                 }
             } else if (inst.getInstructionType() == InstructionType.Ecomplete) {
                 if (inst.getExactType().matches("UP"))
@@ -47,6 +47,8 @@ public class Executor {
                 for (int i = 0; i < inst.getRepeats(); i++) {
                     execute(inst.getInner());
                 }
+            } else if (inst.getInstructionType() == InstructionType.Ccomplete) {
+                pen.changeColor(inst.getData().getData());
             }
         }
     }
