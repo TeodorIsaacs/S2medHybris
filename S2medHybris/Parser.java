@@ -37,7 +37,7 @@ public class Parser {
                 if (Next().getType() != TokenType.Space) {
                     syntaxFel();
                 }
-                spacePeek();
+                int skipped = spacePeek();
                 //Fallet utan paranteser
                 ArrayList<CompleteInstruction> helper = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class Parser {
                     helper.add(Ehelp());
                     out.add(new CompleteInstruction(potrepat, helper));
                 } else if (Peek(1).getType() == TokenType.Repeat) {
-                    CompleteInstruction inner = new CompleteInstruction(Peek(-1).getIntData(), parse());
+                    CompleteInstruction inner = new CompleteInstruction(Peek(-skipped).getIntData(), parse());
                     out.add(inner);
 
 
@@ -62,7 +62,7 @@ public class Parser {
                     if (Next().getType() != TokenType.Cit) {
                         syntaxFel();
                     }
-                    CompleteInstruction inner = new CompleteInstruction(Peek(-2).getIntData(), parse());
+                    CompleteInstruction inner = new CompleteInstruction(Peek(-skipped -1).getIntData(), parse());
                     out.add(inner);
                     if (Peek(0).getType() != TokenType.Cit) {
                         syntaxFel();
@@ -72,6 +72,7 @@ public class Parser {
                 return out;
 
             } else if (t.getType() == TokenType.Space) {
+                /* do nothing */
             } else {
                 syntaxFel();
             }
