@@ -26,11 +26,17 @@ public class Parser {
                 out.add(Chelp());
 
             } else if (t.getType() == TokenType.Repeat) {
-                if (Next().getType() != TokenType.Space) { syntaxFel(); }
+                if (Next().getType() != TokenType.Space) {
+                    syntaxFel();
+                }
                 spacePeek();
-                if (Next().getType() != TokenType.Data) { syntaxFel(); }
+                if (Next().getType() != TokenType.Data) {
+                    syntaxFel();
+                }
                 int potrepat = Peek(0).getIntData();
-                if (Next().getType() != TokenType.Space) { syntaxFel(); }
+                if (Next().getType() != TokenType.Space) {
+                    syntaxFel();
+                }
                 spacePeek();
                 //Fallet utan paranteser
                 ArrayList<CompleteInstruction> helper = new ArrayList<>();
@@ -49,7 +55,6 @@ public class Parser {
                 } else if (Peek(1).getType() == TokenType.Repeat) {
                     CompleteInstruction inner = new CompleteInstruction(Peek(-1).getIntData(), parse());
                     out.add(inner);
-
 
 
                 } else {
@@ -92,53 +97,60 @@ public class Parser {
         System.exit(0);
     }
 
-    private void spacePeek() throws InterruptedException {
+    private int spacePeek() throws InterruptedException {
         int i = 0;
-        while (Peek(1).getType() == TokenType.Space && Index + i + 1 < Indata.size()) {
+        while (Index < Indata.size() -1 && Peek(1).getType() == TokenType.Space) {
             Next();
             i++;
         }
-        if (Index + i + 2 >= Indata.size()) {
-            //syntaxFel();
+        if (Index + 1 >= Indata.size()) {
+            int errorline = Indata.get(Index - i).getLine();
+            syntaxFelSpecial(errorline);
         }
+        return i + 1;
+    }
+
+    private void syntaxFelSpecial(int row) {
+        System.out.println("Syntaxfel på rad " + row);
+        System.exit(0);
     }
 
     private CompleteInstruction Ehelp() throws Exception {
-        spacePeek();
+        int skipped = spacePeek();
         if (Next().getType() != TokenType.Dot) {
             syntaxFel();
         }
-        return (new CompleteInstruction(InstructionType.Ecomplete, Peek(-1).getExactType()));
+        return (new CompleteInstruction(InstructionType.Ecomplete, Peek(-skipped).getExactType()));
     }
 
     private CompleteInstruction Dhelp() throws Exception {
         if (Next().getType() != TokenType.Space) {
             syntaxFel();
         }
-        spacePeek();
+        int skip1 = spacePeek();
         if (Next().getType() != TokenType.Data) {
             syntaxFel();
         }
-        spacePeek();
+        int skip2 = spacePeek();
         if (Next().getType() != TokenType.Dot) {
             syntaxFel();
         }
-        return (new CompleteInstruction(InstructionType.Dcomplete, Peek(-1), Peek(-3).getExactType()));
+        return (new CompleteInstruction(InstructionType.Dcomplete, Peek(-skip2), Peek(-skip1 - skip2 - 1).getExactType()));
     }
 
     private CompleteInstruction Chelp() throws Exception {
         if (Next().getType() != TokenType.Space) {
             syntaxFel();
         }
-        spacePeek();
+        int skip1 = spacePeek();
         if (Next().getType() != TokenType.Hex) {
             syntaxFel();
         }
-        spacePeek();
+        int skip2 = spacePeek();
         if (Next().getType() != TokenType.Dot) {
             syntaxFel();
         }
-        return (new CompleteInstruction(InstructionType.Ccomplete, Peek(-1), Peek(-3).getExactType()));
+        return (new CompleteInstruction(InstructionType.Ccomplete, Peek(-skip2), Peek(-skip1 - skip2 -1).getExactType()));
 
     }
 }

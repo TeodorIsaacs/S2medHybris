@@ -47,7 +47,6 @@ public class Lexer {
                 if (m.group().matches("\\n"))
                     lineCount++;
             }
-
         }
     }
 
