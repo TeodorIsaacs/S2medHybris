@@ -27,24 +27,20 @@ public class Parser {
 
             } else if (t.getType() == TokenType.Repeat) {
                 if (Next().getType() != TokenType.Space) {
-                    System.out.println("Syntaxfel på rad " + This().getLine());
-                    System.exit(0);
+                    syntaxFel();
                 }
                 spacePeek();
                 if (Next().getType() != TokenType.Data) {
-                    System.out.println("Syntaxfel på rad " + This().getLine());
-                    System.exit(0);
+                    syntaxFel();
                 }
                 int potrepat = Peek(0).getIntData();
                 if (Next().getType() != TokenType.Space) {
-                    System.out.println("Syntaxfel på rad " + This().getLine());
-                    System.exit(0);
+                    syntaxFel();
                 }
-                while (Peek(1).getType() == TokenType.Space) {
-                    Next();
-                }
+                spacePeek();
                 //Fallet utan paranteser
                 ArrayList<CompleteInstruction> helper = new ArrayList<>();
+
                 if (Peek(1).getType() == (TokenType.Dinstr)) {
                     Next();
                     helper.add(Dhelp());
@@ -59,17 +55,18 @@ public class Parser {
                 } else if (Peek(1).getType() == TokenType.Repeat) {
                     CompleteInstruction inner = new CompleteInstruction(Peek(-1).getIntData(), parse());
                     out.add(inner);
+
+
+
                 } else {
                     //Vanliga fallet med "" kommer här
                     if (Next().getType() != TokenType.Cit) {
-                        System.out.println("Syntaxfel på rad " + This().getLine());
-                        System.exit(0);
+                        syntaxFel();
                     }
                     CompleteInstruction inner = new CompleteInstruction(Peek(-2).getIntData(), parse());
                     out.add(inner);
                     if (Peek(0).getType() != TokenType.Cit) {
-                        System.out.println("Syntaxfel på rad " + This().getLine());
-                        System.exit(0);
+                        syntaxFel();
                     }
                 }
             } else if (t.getType() == TokenType.Cit) {
@@ -77,9 +74,7 @@ public class Parser {
 
             } else if (t.getType() == TokenType.Space) {
             } else {
-                System.out.println("Syntaxfel på rad " + This().getLine());
-                System.exit(0);
-
+                syntaxFel();
             }
         }
         return out;
@@ -98,6 +93,11 @@ public class Parser {
         return Indata.get(Index);
     }
 
+    private void syntaxFel() {
+        System.out.println("Syntaxfel på rad " + This().getLine());
+        System.exit(0);
+    }
+
     private void spacePeek() throws InterruptedException {
         int i = 0;
         while (Peek(1).getType() == TokenType.Space && Index + i + 1 < Indata.size()) {
@@ -105,52 +105,44 @@ public class Parser {
             i++;
         }
         if (Index + i + 2 >= Indata.size()) {
-            System.out.println("Syntaxfel på rad " + Peek(-i).getLine());
-            System.exit(0);
+            syntaxFel();
         }
     }
 
     private CompleteInstruction Ehelp() throws Exception {
         spacePeek();
         if (Next().getType() != TokenType.Dot) {
-            System.out.println("Syntaxfel på rad " + This().getLine());
-            System.exit(0);
+            syntaxFel();
         }
         return (new CompleteInstruction(InstructionType.Ecomplete, Peek(-1).getExactType()));
     }
 
     private CompleteInstruction Dhelp() throws Exception {
         if (Next().getType() != TokenType.Space) {
-            System.out.println("Syntaxfel på rad " + This().getLine());
-            System.exit(0);
+            syntaxFel();
         }
         spacePeek();
         if (Next().getType() != TokenType.Data) {
-            System.out.println("Syntaxfel på rad " + This().getLine());
-            System.exit(0);
+            syntaxFel();
         }
         spacePeek();
         if (Next().getType() != TokenType.Dot) {
-            System.out.println("Syntaxfel på rad " + This().getLine());
-            System.exit(0);
+            syntaxFel();
         }
         return (new CompleteInstruction(InstructionType.Dcomplete, Peek(-1), Peek(-3).getExactType()));
     }
 
     private CompleteInstruction Chelp() throws Exception {
         if (Next().getType() != TokenType.Space) {
-            System.out.println("Syntaxfel på rad " + This().getLine());
-            System.exit(0);
+            syntaxFel();
         }
         spacePeek();
         if (Next().getType() != TokenType.Hex) {
-            System.out.println("Syntaxfel på rad " + This().getLine());
-            System.exit(0);
+            syntaxFel();
         }
         spacePeek();
         if (Next().getType() != TokenType.Dot) {
-            System.out.println("Syntaxfel på rad " + This().getLine());
-            System.exit(0);
+            syntaxFel();
         }
         return (new CompleteInstruction(InstructionType.Ccomplete, Peek(-1), Peek(-3).getExactType()));
 
