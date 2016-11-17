@@ -26,17 +26,11 @@ public class Parser {
                 out.add(Chelp());
 
             } else if (t.getType() == TokenType.Repeat) {
-                if (Next().getType() != TokenType.Space) {
-                    syntaxFel();
-                }
+                if (Next().getType() != TokenType.Space) { syntaxFel(); }
                 spacePeek();
-                if (Next().getType() != TokenType.Data) {
-                    syntaxFel();
-                }
+                if (Next().getType() != TokenType.Data) { syntaxFel(); }
                 int potrepat = Peek(0).getIntData();
-                if (Next().getType() != TokenType.Space) {
-                    syntaxFel();
-                }
+                if (Next().getType() != TokenType.Space) { syntaxFel(); }
                 spacePeek();
                 //Fallet utan paranteser
                 ArrayList<CompleteInstruction> helper = new ArrayList<>();
@@ -105,7 +99,7 @@ public class Parser {
             i++;
         }
         if (Index + i + 2 >= Indata.size()) {
-            syntaxFel();
+            //syntaxFel();
         }
     }
 
