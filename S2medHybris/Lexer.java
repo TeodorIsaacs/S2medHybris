@@ -71,14 +71,14 @@ public class Lexer {
     public static String read(InputStream in) throws java.io.IOException {
         InputStreamReader reader = new InputStreamReader(in);
         StringBuilder builder = new StringBuilder();
-        char input[] = new char[3000];
+        char input[] = new char[300000];
 
         int checker = 0;
 
-        while((checker = reader.read(input)) != -1){
-        //checker = reader.read(input);
+        //while((checker = reader.read(input)) != -1){
+        checker = reader.read(input);
         builder.append(input, 0, checker);
-        }
+
 
         String retstr = builder.toString();
         return retstr;
