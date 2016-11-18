@@ -20,6 +20,10 @@ public class Parser {
         ArrayList<CompleteInstruction> out = new ArrayList<>();
         while (Index < Indata.size() - 1) {
             Token t = Next();
+
+            if(t.getType() == TokenType.Invalid){
+                syntaxFel();
+            }
             CompleteInstruction temp = basicInstrHelp(t);
             if (temp != null) {
                 out.add(temp);
@@ -32,7 +36,7 @@ public class Parser {
 
                 //Fallet utan paranteser
                 CompleteInstruction temp2 = repNoCitHelp(repeats);
-                if (temp2 != null){
+                if (temp2 != null) {
                     out.add(temp2);
                     if (returnhelper())
                         return out;
@@ -46,6 +50,7 @@ public class Parser {
                     CompleteInstruction inner = new CompleteInstruction(repeats, parse());
                     if (inner.getInner().size() == 0)
                         syntaxFel();
+
                     out.add(inner);
                     if (Peek(0).getType() != TokenType.Cit) {
                         int i = 0;
@@ -133,15 +138,15 @@ public class Parser {
     }
 
     private Token Peek(int amount) {
-        if (Index + amount >= Indata.size())
-            syntaxFel();
+        //if (Index + amount >= Indata.size())
+            //syntaxFel();
         return Indata.get(Index + amount);
     }
 
     private Token Next() {
         Index++;
-        if (Index >= Indata.size())
-            syntaxFel();
+        //if (Index >= Indata.size())
+        //    syntaxFel();
         return Indata.get(Index);
     }
 

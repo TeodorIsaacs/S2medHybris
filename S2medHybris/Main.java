@@ -15,12 +15,6 @@ public class Main {
         //PARSA
         Parser parser = new Parser(tokenList, lex.errorLine);
         ArrayList<CompleteInstruction> instructions = parser.parse();
-
-        if (lex.errorLine!= -1){
-            System.out.println("Syntaxfel på rad " + lex.errorLine);
-            System.exit(0);
-        }
-
         //EXECUTE
         Executor executor = new Executor();
         executor.execute(instructions);

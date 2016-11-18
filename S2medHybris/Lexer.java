@@ -30,11 +30,9 @@ public class Lexer {
             } else if (m.group().matches("#[A-F\\d]{6}")) {
                 tokenList.add(new Token(TokenType.Hex, "Hex", lineCount, index, m.group()));
             } else if (m.group().matches("0")) {
-                if (errorLine == -1)
-                    errorLine = lineCount;
+                tokenList.add(new Token(TokenType.Invalid, "Invalid", lineCount, index));
             } else if (m.group().matches(",")) {
-                if (errorLine == -1)
-                    errorLine = lineCount;
+                tokenList.add(new Token(TokenType.Invalid, "Invalid", lineCount, index));
             } else if (m.group().matches("\\d{1,5}")) {
                 tokenList.add(new Token(TokenType.Data, "Data", lineCount, index, m.group()));
             } else if (m.group().matches("FORW|BACK|LEFT|RIGHT")) {
@@ -54,8 +52,9 @@ public class Lexer {
                 if (m.group().matches("\\n"))
                     lineCount++;
             } else if (m.group().matches("-") || m.group().matches(".+")) {
-                if (errorLine == -1)
-                    errorLine = lineCount;
+                tokenList.add(new Token(TokenType.Invalid, "Invalid", lineCount, index));
+
+
             }
         }
     }
@@ -75,10 +74,10 @@ public class Lexer {
 
         int checker = 0;
 
-        //while((checker = reader.read(input)) != -1){
-        checker = reader.read(input);
-        builder.append(input, 0, checker);
-
+        while ((checker = reader.read(input)) != -1) {
+            //    checker = reader.read(input);
+            builder.append(input, 0, checker);
+        }
 
         String retstr = builder.toString();
         return retstr;

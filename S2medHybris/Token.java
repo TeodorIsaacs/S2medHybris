@@ -2,7 +2,7 @@ package S2medHybris;
 
 // De olika token-typer vi har i grammatiken
 enum TokenType {
-    Data, Hex, Einstr, Dinstr, Repeat, Cinstr, Dot, Space, Cit
+    Data, Hex, Einstr, Dinstr, Repeat, Cinstr, Dot, Space, Cit, Invalid
     }
 
 class Token {
