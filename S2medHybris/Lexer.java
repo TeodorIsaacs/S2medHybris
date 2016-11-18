@@ -75,10 +75,10 @@ public class Lexer {
 
         int checker = 0;
 
-        //while((checker = reader.read(input)) != -1){
-        checker = reader.read(input);
+        while((checker = reader.read(input)) != -1){
+        //checker = reader.read(input);
         builder.append(input, 0, checker);
-        //}
+        }
 
         String retstr = builder.toString();
         return retstr;

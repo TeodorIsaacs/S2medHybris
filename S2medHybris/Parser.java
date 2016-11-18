@@ -84,16 +84,22 @@ public class Parser {
                     repLvs[level + 1] = false;
                     level++;
                     CompleteInstruction inner = new CompleteInstruction(Peek(-skipped - 1).getIntData(), parse());
+                    if (inner.getInner().size() == 0)
+                        syntaxFel();
                     out.add(inner);
                     if (Peek(0).getType() != TokenType.Cit) {
-                        syntaxFel();
+                        int i = 0;
+                        while (Peek(i).getType() == TokenType.Space)
+                            i--;
+                        syntaxFelSpecial(Peek(i).getLine());
                     }
                     if (returnhelper())
                         return out;
                 }
             } else if (t.getType() == TokenType.Cit) {
-                if (level==0)
+                if (level==0) {
                     syntaxFel();
+                }
                 level--;
                 return out;
 
