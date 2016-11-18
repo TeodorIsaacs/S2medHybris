@@ -92,6 +92,8 @@ public class Parser {
                         return out;
                 }
             } else if (t.getType() == TokenType.Cit) {
+                if (level==0)
+                    syntaxFel();
                 level--;
                 return out;
 
