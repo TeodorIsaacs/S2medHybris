@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class Parser {
     private ArrayList<Token> Indata;
     private int Index = -1;
-    private boolean doingInstruction;
+    private int level = 0;
+    private boolean[] repLvs = new boolean[20];
+    private boolean innerNoCit = false;
 
     public Parser(ArrayList<Token> Indata) {
         this.Indata = Indata;
@@ -18,12 +20,18 @@ public class Parser {
             Token t = Next();
             if (t.getType() == TokenType.Einstr) {
                 out.add(Ehelp());
+                if (returnhelper())
+                    return out;
 
             } else if (t.getType() == TokenType.Dinstr) {
                 out.add(Dhelp());
+                if (returnhelper())
+                    return out;
 
             } else if (t.getType() == TokenType.Cinstr) {
                 out.add(Chelp());
+                if (returnhelper())
+                    return out;
 
             } else if (t.getType() == TokenType.Repeat) {
                 if (Next().getType() != TokenType.Space) {
@@ -45,30 +53,44 @@ public class Parser {
                     Next();
                     helper.add(Dhelp());
                     out.add(new CompleteInstruction(potrepat, helper));
+                    if (returnhelper())
+                        return out;
                 } else if (Peek(1).getType() == TokenType.Cinstr) {
                     Next();
                     out.add(Chelp());
+                    if (returnhelper())
+                        return out;
                 } else if (Peek(1).getType() == TokenType.Einstr) {
                     Next();
                     helper.add(Ehelp());
                     out.add(new CompleteInstruction(potrepat, helper));
+                    if (returnhelper())
+                        return out;
                 } else if (Peek(1).getType() == TokenType.Repeat) {
+                    repLvs[level + 1] = true;
+                    level++;
                     CompleteInstruction inner = new CompleteInstruction(Peek(-skipped).getIntData(), parse());
                     out.add(inner);
-
+                    if (returnhelper())
+                        return out;
 
                 } else {
                     //Vanliga fallet med "" kommer här
                     if (Next().getType() != TokenType.Cit) {
                         syntaxFel();
                     }
-                    CompleteInstruction inner = new CompleteInstruction(Peek(-skipped -1).getIntData(), parse());
+                    repLvs[level + 1] = false;
+                    level++;
+                    CompleteInstruction inner = new CompleteInstruction(Peek(-skipped - 1).getIntData(), parse());
                     out.add(inner);
                     if (Peek(0).getType() != TokenType.Cit) {
                         syntaxFel();
                     }
+                    if (returnhelper())
+                        return out;
                 }
             } else if (t.getType() == TokenType.Cit) {
+                level--;
                 return out;
 
             } else if (t.getType() == TokenType.Space) {
@@ -78,6 +100,15 @@ public class Parser {
             }
         }
         return out;
+    }
+
+    private boolean returnhelper() {
+        boolean returning = false;
+        if (level >= 1 && repLvs[level]) {
+            returning = true;
+            level--;
+        }
+        return returning;
     }
 
     private Token Peek(int amount) {
@@ -100,7 +131,7 @@ public class Parser {
 
     private int spacePeek() throws InterruptedException {
         int i = 0;
-        while (Index < Indata.size() -1 && Peek(1).getType() == TokenType.Space) {
+        while (Index < Indata.size() - 1 && Peek(1).getType() == TokenType.Space) {
             Next();
             i++;
         }
@@ -151,7 +182,7 @@ public class Parser {
         if (Next().getType() != TokenType.Dot) {
             syntaxFel();
         }
-        return (new CompleteInstruction(InstructionType.Ccomplete, Peek(-skip2), Peek(-skip1 - skip2 -1).getExactType()));
+        return (new CompleteInstruction(InstructionType.Ccomplete, Peek(-skip2), Peek(-skip1 - skip2 - 1).getExactType()));
 
     }
 }
