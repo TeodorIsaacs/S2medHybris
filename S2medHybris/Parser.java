@@ -8,9 +8,11 @@ public class Parser {
     private int level = 0;
     private boolean[] repLvs = new boolean[20];
     private boolean innerNoCit = false;
+    public int errorRow = -1;
 
-    public Parser(ArrayList<Token> Indata) {
+    public Parser(ArrayList<Token> Indata, int errRowLexer) {
         this.Indata = Indata;
+        errorRow = errRowLexer;
     }
 
     public ArrayList<CompleteInstruction> parse() throws Exception {
@@ -125,7 +127,9 @@ public class Parser {
     }
 
     private void syntaxFel() {
-        System.out.println("Syntaxfel på rad " + This().getLine());
+        if (This().getLine() < errorRow || errorRow == -1) {
+            System.out.println("Syntaxfel på rad " + This().getLine());
+        } else System.out.println("Syntaxfel på rad " + errorRow);
         System.exit(0);
     }
 
@@ -143,7 +147,9 @@ public class Parser {
     }
 
     private void syntaxFelSpecial(int row) {
-        System.out.println("Syntaxfel på rad " + row);
+        if (row < errorRow || errorRow == -1) {
+            System.out.println("Syntaxfel på rad " + row);
+        } else System.out.println("Syntaxfel på rad " + errorRow);
         System.exit(0);
     }
 

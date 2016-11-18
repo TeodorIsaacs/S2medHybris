@@ -13,8 +13,9 @@ public class Main {
         String str = lex.getString();
         ArrayList<Token> tokenList = lex.getTokenList();
         //PARSA
-        Parser parser = new Parser(tokenList);
+        Parser parser = new Parser(tokenList, lex.errorLine);
         ArrayList<CompleteInstruction> instructions = parser.parse();
+
         //EXECUTE
         Executor executor = new Executor();
         executor.execute(instructions);

@@ -14,47 +14,57 @@ import java.util.regex.Matcher;
 public class Lexer {
     String input;
     ArrayList<Token> tokenList = new ArrayList<Token>();
-    int lineCount=1;
+    int lineCount = 1;
     int index = 0;
+    int errorLine = -1;
 
-    public Lexer(InputStream in) throws java.io.IOException{
+    public Lexer(InputStream in) throws java.io.IOException {
         input = read(in).toUpperCase();
         //System.out.println(input);
-        Pattern patt = Pattern.compile("\\%.*\\n|\\d{1,5}|FORW|BACK|LEFT|RIGHT|DOWN|UP|COLOR|REP|\\.|\\\"|#[A-F\\d]{6}|[ \\t\\n]");
+        Pattern patt = Pattern.compile("\\%.*\\n|\\d{1,5}|FORW|BACK|LEFT|RIGHT|DOWN|UP|COLOR|REP|\\.|\\\"|#[A-F\\d]{6}|[ \\t\\n]|.+");
         Matcher m = patt.matcher(input);
-        while (m.find()){
-            if(m.group().matches("\\%.*\\n")){
+        while (m.find()) {
+            if (m.group().matches("\\%.*\\n")) {
                 lineCount++;
                 tokenList.add(new Token(TokenType.Space, "space", lineCount, index));
-            } else if (m.group().matches("#[A-F\\d]{6}")){
+            } else if (m.group().matches("#[A-F\\d]{6}")) {
                 tokenList.add(new Token(TokenType.Hex, "Hex", lineCount, index, m.group()));
-            } else if (m.group().matches("\\d{1,5}")){
+            } else if (m.group().matches("0")) {
+                if (errorLine == -1)
+                    errorLine = lineCount;
+            } else if (m.group().matches(",")) {
+                if (errorLine == -1)
+                    errorLine = lineCount;
+            } else if (m.group().matches("\\d{1,5}")) {
                 tokenList.add(new Token(TokenType.Data, "Data", lineCount, index, m.group()));
-            } else if (m.group().matches("FORW|BACK|LEFT|RIGHT")){
+            } else if (m.group().matches("FORW|BACK|LEFT|RIGHT")) {
                 tokenList.add(new Token(TokenType.Dinstr, m.group(), lineCount, index));
-            } else if (m.group().matches("DOWN|UP")){
+            } else if (m.group().matches("DOWN|UP")) {
                 tokenList.add(new Token(TokenType.Einstr, m.group(), lineCount, index));
-            } else if (m.group().matches("COLOR")){
+            } else if (m.group().matches("COLOR")) {
                 tokenList.add(new Token(TokenType.Cinstr, m.group(), lineCount, index));
-            } else if (m.group().matches("REP")){
+            } else if (m.group().matches("REP")) {
                 tokenList.add(new Token(TokenType.Repeat, m.group(), lineCount, index));
-            } else if (m.group().matches("\\.")){
+            } else if (m.group().matches("\\.")) {
                 tokenList.add(new Token(TokenType.Dot, m.group(), lineCount, index));
-            } else if (m.group().matches("\\\"")){
+            } else if (m.group().matches("\\\"")) {
                 tokenList.add(new Token(TokenType.Cit, "cit", lineCount, index));
-            } else if (m.group().matches("[ \\t\\n]")){
+            } else if (m.group().matches("[ \\t\\n]")) {
                 tokenList.add(new Token(TokenType.Space, "space", lineCount, index));
                 if (m.group().matches("\\n"))
                     lineCount++;
+            } else if (m.group().matches("-") || m.group().matches(".+")) {
+                if (errorLine == -1)
+                    errorLine = lineCount;
             }
         }
     }
 
-    public ArrayList<Token> getTokenList(){
+    public ArrayList<Token> getTokenList() {
         return tokenList;
     }
 
-    public String getString() throws java.io.IOException{
+    public String getString() throws java.io.IOException {
         return input;
     }
 
